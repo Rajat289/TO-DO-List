@@ -6,16 +6,44 @@ const filterBtns = document.querySelectorAll('.filter-btn');
 const totalTodosSpan = document.getElementById('totalTodos');
 const completedTodosSpan = document.getElementById('completedTodos');
 const clearCompletedBtn = document.getElementById('clearCompleted');
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.querySelector('.theme-icon');
 
 // State
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
 let currentFilter = 'all';
+let isDarkMode = localStorage.getItem('theme') === 'dark';
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
     renderTodos();
     updateStats();
+    setupThemeToggle();
 });
+
+// Theme Management
+function initTheme() {
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+        updateThemeIcon();
+    }
+}
+
+function setupThemeToggle() {
+    themeToggle.addEventListener('click', toggleTheme);
+}
+
+function toggleTheme() {
+    isDarkMode = !isDarkMode;
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    updateThemeIcon();
+}
+
+function updateThemeIcon() {
+    themeIcon.textContent = isDarkMode ? '☀️' : '🌙';
+}
 
 // Add todo
 addBtn.addEventListener('click', addTodo);
